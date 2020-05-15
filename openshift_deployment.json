@@ -1,0 +1,163 @@
+# openshift_deployment.json
+{
+    "kind": "Template",
+    "apiVersion": "deployment_template/v1",
+    "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null
+    },
+    "objects": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "deployment_template/v1",
+            "metadata": {
+                "name": "${APP_NAME}",
+                "generation": 6,
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${APP_NAME}"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "SnehalShinde"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {}
+                },
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "test": false,
+                "selector": {
+                    "app": "${APP_NAME}",
+                    "deploymentconfig": "${APP_NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "${APP_NAME}",
+                            "deploymentconfig": "${APP_NAME}"
+                        },
+                        "annotations": {
+                            "openshift.io/generated-by": "SnehaShinde"
+                        }
+                    },
+                    "spec": {
+                        "volumes": [
+                            {
+                                "name": "webapp-volume",
+                                "configMap": {
+                                    "name": "webAppConfigMap",
+                                    "defaultMode": 420
+                                }
+                            }
+                        ],
+                        "containers": [
+                            {
+                                "name": "${APP_NAME}",
+                                "image": "${IMAGE_NAME}",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "JAVA_XMS",
+                                        "value": "128m"
+                                    },
+                                    {
+                                        "name": "JAVA_XMX",
+                                        "value": "512m"
+                                    },
+                                    {
+                                        "name": "SERVICE_NAME",
+                                        "value": "${SERVICE_NAME}"
+                                    }
+                                ],
+                                "resources": {}
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {
+                "latestVersion": 0,
+                "observedGeneration": 0,
+                "replicas": 0,
+                "updatedReplicas": 0,
+                "availableReplicas": 0,
+                "unavailableReplicas": 0
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "deployment_template/v1",
+            "metadata": {
+                "name": "${APP_NAME}",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${APP_NAME}"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "SnehaShinde"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "protocol": "TCP",
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "app": "${APP_NAME}",
+                    "deploymentconfig": "${APP_NAME}"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        }
+    ],
+	"parameters": [
+        {
+            "name": "APP_NAME",
+            "description": "The application short name that is assigned to resources",
+            "required": true
+        },
+		{
+            "name": "APP_ENV",
+            "description": "The application envrionment",
+            "required": false
+        },
+        {
+            "name": "IMAGE_NAME",
+            "description": "The name of the image to be used for the deployment for the project",
+            "required": true
+        },
+        {
+            "name": "SERVICE_NAME",
+            "description": "Service name for which the Pod is to be spawned",
+            "required": true
+        }
+	]
+}

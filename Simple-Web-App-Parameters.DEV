@@ -1,0 +1,4 @@
+APP_ENV=DEV
+APP_NAME=simplewebapp
+IMAGE_NAME=simplewebapp:6.0
+SERVICE_NAME=simplewebapp-service
