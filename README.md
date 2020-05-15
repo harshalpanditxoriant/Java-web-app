@@ -6,3 +6,4 @@ change
 ngrok
 added new commit
 port 8080
+gitcommit checking
