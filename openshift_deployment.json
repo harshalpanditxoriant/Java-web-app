@@ -1,7 +1,7 @@
 # openshift_deployment.json
 {
     "kind": "Template",
-    "apiVersion": "deployment_template/v1",
+    "apiVersion": "template.openshift.io/v1",
     "metadata": {
         "name": "${APP_NAME}",
         "creationTimestamp": null
@@ -9,7 +9,7 @@
     "objects": [
         {
             "kind": "DeploymentConfig",
-            "apiVersion": "deployment_template/v1",
+            "apiVersion": "template.openshift.io/v1",
             "metadata": {
                 "name": "${APP_NAME}",
                 "generation": 6,
@@ -106,7 +106,7 @@
         },
         {
             "kind": "Service",
-            "apiVersion": "deployment_template/v1",
+            "apiVersion": "template.openshift.io/v1",
             "metadata": {
                 "name": "${APP_NAME}",
                 "creationTimestamp": null,
