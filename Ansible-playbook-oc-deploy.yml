@@ -1,4 +1,4 @@
- ---
+---
 - name: Ansible playbook for login to openshift
   remote_user: root
   hosts: webservers
