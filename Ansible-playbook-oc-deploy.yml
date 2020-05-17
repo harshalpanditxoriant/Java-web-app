@@ -1,16 +1,21 @@
 ---
 - name: Ansible playbook for login to openshift
-  remote_user: root
   hosts: webservers
   tasks:
      - name: Logging in to OpenShift cluster
        command: oc login https://10.20.14.183:8443/ -u system -p admin
+     - name: Building Docker Image with Tag number {{BUILD_NUMBER}}.0
+       command: docker build -t simplewebapp:{{BUILD_NUMBER}}.0 .
+       become: yes
+       become_user: root
+       args:
+         chdir: Java-web-app/
      - name: Printing BUILD Number
        debug: msg="Hello to {{BUILD_NUMBER}}, from Ansible!!"
      - name: Setting respective project - [webapp]
        command: oc project webapp
      - name: Processing deployment templaate
-       shell: oc process -f openshift_deployment.json APP_ENV=DEV APP_NAME=simplewebapp IMAGE_NAME=simplewebapp:6.0 SERVICE_NAME=simplewebapp > resources.yml
+       shell: oc process -f openshift_deployment.json IMAGE_NAME=simplewebapp:{{BUILD_NUMBER}}.0 APP_ENV=DEV > resources.yml
        args:
          chdir: Java-web-app/
      - name: Applying deployment template
