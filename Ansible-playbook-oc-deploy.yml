@@ -3,12 +3,18 @@
   remote_user: root
   hosts: webservers
   tasks:
-     - name: Create Project
+     - name: Logging in to OpenShift cluster
        command: oc login https://10.20.14.183:8443/ -u system -p admin
-     - name: Changing webapp project
+     - name: Printing BUILD Number
+       debug: msg="Hello to {{BUILD_NUMBER}}, from Ansible!!"
+     - name: Setting respective project - [webapp]
        command: oc project webapp
-     - name: Deploying application into openshift
-       command: oc process -f openshift_deployment.json `cat Simple-Web-App-Parameters.DEV` | oc apply -f -
-     - name: Exposing Service
-       command: oc expose service/simplejavawebapp
+     - name: Processing deployment templaate
+       shell: oc process -f openshift_deployment.json APP_ENV=DEV APP_NAME=simplewebapp IMAGE_NAME=simplewebapp:6.0 SERVICE_NAME=simplewebapp > resources.yml
+       args:
+         chdir: Java-web-app/
+     - name: Applying deployment template
+       command: oc apply -f resources.yml
+       args:
+         chdir: Java-web-app/
 ...
