@@ -8,3 +8,4 @@ added new commit
 port 8080
 gitcommit checking
 git commit
+git pull
