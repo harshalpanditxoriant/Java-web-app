@@ -204,7 +204,8 @@
 	"parameters": [{
 			"name": "APP_NAME",
 			"description": "The application short name that is assigned to resources",
-			"required": true
+			"required": true,
+		        "value": "simplewebapp"
 		},
 		{
 			"name": "APP_ENV",
@@ -219,7 +220,8 @@
 		{
 			"name": "SERVICE_NAME",
 			"description": "Service name for which the Pod is to be spawned",
-			"required": true
+			"required": true,
+			"value": "simplewebapp-service"
 		}
 	]
 }
