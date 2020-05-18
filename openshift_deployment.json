@@ -172,7 +172,8 @@
 			}
 		  },
 		  "spec": {
-			"host": "simplewebapp-webapp.router.default.svc.cluster.local",
+			"host": "0.20.14.183.nip.io",
+			 "path": "/sample/",
 			"to": {
 			  "kind": "Service",
 			  "name": "${APP_NAME}",
@@ -186,7 +187,8 @@
 		  "status": {
 			"ingress": [
 			  {
-				"host": "simplewebapp-webapp.router.default.svc.cluster.local",
+				"host": "0.20.14.183.nip.io",
+				 "path": "/sample",
 				"routerName": "router",
 				"conditions": [
 				  {
