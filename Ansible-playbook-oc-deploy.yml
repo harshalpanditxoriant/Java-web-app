@@ -4,6 +4,12 @@
   tasks:
      - name: Logging in to OpenShift cluster
        command: oc login https://10.20.14.183:8443/ -u system -p admin
+     - name: Pulling latest code from Git repo
+       command: git pull https://github.com/harshalpanditxoriant/Java-web-app.git master
+       become: yes
+       become_user: root
+       args:
+         chdir: Java-web-app/
      - name: Building Docker Image with Tag number {{BUILD_NUMBER}}.0
        command: docker build -t simplewebapp:{{BUILD_NUMBER}}.0 .
        become: yes
