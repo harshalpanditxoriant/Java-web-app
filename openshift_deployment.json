@@ -31,7 +31,7 @@
 					},
 					"resources": {}
 				},
-				"replicas": 1,
+				"replicas": 2,
 				"revisionHistoryLimit": 10,
 				"test": false,
 				"selector": {
@@ -118,7 +118,7 @@
 			  "apiVersion": "apps/v1",
 			  "subresource": "scale"
 			},
-			"minReplicas": 1,
+			"minReplicas": 2,
 			"maxReplicas": 5,
 			"targetCPUUtilizationPercentage": 80
 		  }
