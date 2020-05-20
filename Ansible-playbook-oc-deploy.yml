@@ -1,9 +1,7 @@
 ---
-- name: Ansible playbook for login to openshift
+- name: Ansible playbook for Openshift Deployment
   hosts: webservers
   tasks:
-     - name: Logging in to OpenShift cluster
-       command: oc login https://10.20.14.183:8443/ -u system -p admin
      - name: Pulling latest code from Git repo
        command: git pull https://github.com/harshalpanditxoriant/Java-web-app.git master
        become: yes
@@ -16,15 +14,15 @@
        become_user: root
        args:
          chdir: Java-web-app/
-     - name: Printing BUILD Number
-       debug: msg="Hello to {{BUILD_NUMBER}}, from Ansible!!"
-     - name: Setting respective project - [webapp]
+     - name: Login into OpenShift cluster
+       command: oc login https://10.20.14.183:8443/ -u system -p admin
+     - name: configuring project - [webapp]
        command: oc project webapp
-     - name: Processing deployment templaate
+     - name: Processing deployment templaate and input parameters
        shell: oc process -f openshift_deployment.json IMAGE_NAME=simplewebapp:{{BUILD_NUMBER}}.0 APP_ENV=DEV > resources.yml
        args:
          chdir: Java-web-app/
-     - name: Applying deployment template
+     - name: Applying deployment template and deploying code into openshift
        command: oc apply -f resources.yml
        args:
          chdir: Java-web-app/
