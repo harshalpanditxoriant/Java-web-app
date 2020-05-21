@@ -3,7 +3,7 @@
   hosts: webservers
   tasks:
      - name: Pulling latest code from Git repo
-       command: git pull https://github.com/harshalpanditxoriant/Java-web-app.git Dev
+       command: git pull https://github.com/harshalpanditxoriant/Java-web-app.git master
        become: yes
        become_user: root
        args:
